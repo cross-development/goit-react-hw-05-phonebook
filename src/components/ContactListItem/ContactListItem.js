@@ -12,7 +12,7 @@ const ContactListItem = ({ name, number, onRemove }) => {
 			</p>
 			<div className={styles.contactAction}>
 				<button type="button" className={styles.contactListButton} onClick={onRemove}>
-					Delete
+					&#10006;
 				</button>
 			</div>
 		</li>

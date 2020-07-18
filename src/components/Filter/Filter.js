@@ -11,7 +11,9 @@ const Filter = ({ title, value, onChangeFilter }) => {
 				{title}
 				<input
 					className={styles.phonebookInput}
+					autoFocus
 					type="text"
+					autoComplete="off"
 					value={value}
 					onChange={e => onChangeFilter(e.target.value)}
 				/>
