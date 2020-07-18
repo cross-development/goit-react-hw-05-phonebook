@@ -9,3 +9,8 @@
 *::after {
 	box-sizing: inherit;
 }
+
+html {
+	padding: 20px;
+}
+
