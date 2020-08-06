@@ -2,25 +2,24 @@
 import React, { Component } from 'react';
 import { CSSTransition } from 'react-transition-group';
 //Components
-import Filter from '../Filter/Filter';
-import Heading from '../Heading/Heading';
-import Section from '../Section/Section';
-import ContactList from '../ContactList/ContactList';
-import ContactForm from '../ContactForm/ContactForm';
-import Notification from '../Notification/Notification';
+import Filter from '../Filter';
+import Heading from '../Heading';
+import Section from '../Section';
+import ContactList from '../ContactList';
+import ContactForm from '../ContactForm';
+import Notification from '../Notification';
 //Utils
 import { v4 as uuid } from 'uuid';
 //Styles
-import './App.module.css';
-import '../../animation/fadeFilter.css';
-import '../../animation/fadeHeading.css';
-import '../../animation/fadeNotification.css';
+import fadeFilter from '../../animation/fadeFilter.module.css';
+import fadeHeading from '../../animation/fadeHeading.module.css';
+import fadeNotification from '../../animation/fadeNotification.module.css';
 
 export class App extends Component {
 	state = {
 		contacts: [],
 		filter: '',
-		showNotification: false,
+		isNotice: false,
 	};
 
 	componentDidMount() {
@@ -45,7 +44,7 @@ export class App extends Component {
 		);
 
 		if (isContactExists) {
-			this.setState({ showNotification: true });
+			this.setState({ isNotice: true });
 			return this.setNotificationTimeout(2000);
 		}
 
@@ -55,78 +54,49 @@ export class App extends Component {
 			number,
 		};
 
-		this.setState(prevState => {
-			return {
-				contacts: [...prevState.contacts, contact],
-			};
-		});
+		this.setState(prevState => ({ contacts: [...prevState.contacts, contact] }));
 	};
 
-	setNotificationTimeout = delay => {
-		setTimeout(() => {
-			this.setState({ showNotification: false });
-		}, delay);
-	};
+	setNotificationTimeout = delay => setTimeout(() => this.setState({ isNotice: false }), delay);
 
 	getVisibleContacts = () => {
 		const { contacts, filter } = this.state;
 
-		return contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()));
+		return contacts.filter(({ name }) => name.toLowerCase().includes(filter.toLowerCase()));
 	};
 
-	removeContact = contactId => {
-		this.setState(prevState => {
-			return {
-				contacts: prevState.contacts.filter(({ id }) => id !== contactId),
-			};
-		});
+	removeContactById = contactId => {
+		this.setState(prevState => ({
+			contacts: prevState.contacts.filter(({ id }) => id !== contactId),
+		}));
 	};
 
-	handleChangeFilter = filter => {
-		this.setState({ filter });
-	};
+	handleChangeFilter = filter => this.setState({ filter });
 
 	render() {
-		const { contacts, filter, showNotification } = this.state;
-
-		const visibleContact = this.getVisibleContacts();
+		const { contacts, filter, isNotice } = this.state;
+		const visibleContacts = this.getVisibleContacts();
 
 		return (
-			<>
-				<Section>
-					<CSSTransition in={true} classNames="Heading-fade" timeout={500} appear unmountOnExit>
-						<Heading title="Phonebook" />
-					</CSSTransition>
+			<Section>
+				<CSSTransition in={true} classNames={fadeHeading} timeout={500} appear unmountOnExit>
+					<Heading />
+				</CSSTransition>
 
-					<CSSTransition
-						in={showNotification}
-						classNames="Notification-fade"
-						timeout={250}
-						unmountOnExit
-					>
-						<Notification title="Contact already exists!" />
-					</CSSTransition>
+				<CSSTransition in={isNotice} classNames={fadeNotification} timeout={250} unmountOnExit>
+					<Notification />
+				</CSSTransition>
 
-					<ContactForm onAddContact={this.addContact} />
+				<ContactForm onAddContact={this.addContact} />
 
-					<CSSTransition
-						in={contacts.length > 1}
-						classNames="Filter-fade"
-						timeout={250}
-						unmountOnExit
-					>
-						<Filter
-							title="Find contacts by name"
-							value={filter}
-							onChangeFilter={this.handleChangeFilter}
-						/>
-					</CSSTransition>
+				<CSSTransition in={contacts.length > 1} classNames={fadeFilter} timeout={250} unmountOnExit>
+					<Filter value={filter} onChangeFilter={this.handleChangeFilter} />
+				</CSSTransition>
 
-					{contacts.length > 0 && (
-						<ContactList contacts={visibleContact} onRemoveContact={this.removeContact} />
-					)}
-				</Section>
-			</>
+				{contacts.length > 0 && (
+					<ContactList contacts={visibleContacts} onRemoveContact={this.removeContactById} />
+				)}
+			</Section>
 		);
 	}
 }

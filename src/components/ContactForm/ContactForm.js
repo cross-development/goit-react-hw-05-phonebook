@@ -14,18 +14,12 @@ export class ContactForm extends Component {
 		number: '',
 	};
 
-	handleChange = e => {
-		const { name, value } = e.target;
+	handleChange = e => this.setState({ [e.target.name]: e.target.value });
 
-		this.setState({ [name]: value });
-	};
-
-	handleSubmit = e => {
+	handleFormSubmit = e => {
 		e.preventDefault();
 
-		const { name, number } = this.state;
-
-		this.props.onAddContact(name, number);
+		this.props.onAddContact(this.state.name, this.state.number);
 		this.setState({ name: '', number: '' });
 	};
 
@@ -33,11 +27,11 @@ export class ContactForm extends Component {
 		const { name, number } = this.state;
 
 		return (
-			<form className={styles.form} onSubmit={this.handleSubmit}>
+			<form className={styles.form} onSubmit={this.handleFormSubmit}>
 				<label>
 					Name
 					<input
-						className={styles.formInput}
+						className={styles.input}
 						autoFocus
 						type="text"
 						name="name"
@@ -50,8 +44,7 @@ export class ContactForm extends Component {
 				<label>
 					Number
 					<input
-						className={styles.formInput}
-						autoFocus
+						className={styles.input}
 						type="text"
 						name="number"
 						autoComplete="off"
@@ -60,7 +53,7 @@ export class ContactForm extends Component {
 					/>
 				</label>
 
-				<button className={styles.contactFormButton} type="submit">
+				<button className={styles.button} type="submit">
 					Add contact
 				</button>
 			</form>
