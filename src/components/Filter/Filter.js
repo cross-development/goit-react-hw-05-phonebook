@@ -9,10 +9,10 @@ const Filter = ({ value, onChangeFilter }) => (
 		<label>
 			Find contacts by name
 			<input
-				className={styles.input}
 				type="text"
-				autoComplete="off"
 				value={value}
+				autoComplete="off"
+				className={styles.input}
 				onChange={e => onChangeFilter(e.target.value)}
 			/>
 		</label>

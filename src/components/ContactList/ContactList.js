@@ -6,7 +6,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import ContactListItem from '../ContactListItem';
 //Styles
 import styles from './ContactList.module.css';
-import fadeContactList from '../../animation/fadeContactList.module.css';
+import fadeContactList from 'animation/fadeContactList.module.css';
 
 const ContactList = ({ contacts, onRemoveContact }) => (
 	<TransitionGroup component="ul" className={styles.contactList}>

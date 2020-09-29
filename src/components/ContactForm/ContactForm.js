@@ -31,12 +31,13 @@ export class ContactForm extends Component {
 				<label>
 					Name
 					<input
-						className={styles.input}
+						required
 						autoFocus
 						type="text"
 						name="name"
-						autoComplete="off"
 						value={name}
+						autoComplete="off"
+						className={styles.input}
 						onChange={this.handleChange}
 					/>
 				</label>
@@ -44,11 +45,12 @@ export class ContactForm extends Component {
 				<label>
 					Number
 					<input
-						className={styles.input}
+						required
 						type="text"
 						name="number"
-						autoComplete="off"
 						value={number}
+						autoComplete="off"
+						className={styles.input}
 						onChange={this.handleChange}
 					/>
 				</label>
